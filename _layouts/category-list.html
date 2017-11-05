@@ -1,0 +1,42 @@
+---
+layout: page
+---
+
+{% unless page.content == '' %}
+  {{ content }}
+{% endunless %}
+
+
+
+
+<div class="tags-list">
+    {% for category in site.categories %}
+        <a href="#{{ category | first | slugify }}" class="category-list">
+                <span class="tag-name">{{ category | first }}</span>
+                <span class="tag-count">{{ category | last | size }}</span>
+        </a>
+    {% endfor %}
+</div>
+
+<hr/>
+
+<div class="posts-by-tag">
+    {% for category_full in site.categories %}
+        {% assign category = category_full | first %}
+        <div id="{{ category | slugify }}" class="posts-for-tag">
+          <h2>{{ category }}</h2>
+          <ul class="posts-list">
+            {% for post in site.categories[category] %}
+              <li>
+                <h3>
+                  <a href="{{ site.baseurl }}{{ post.url }}">
+                    {{ post.title }}
+                    <small>{{ post.date | date_to_string }}</small>
+                  </a>
+                </h3>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+    {% endfor %}
+</div>

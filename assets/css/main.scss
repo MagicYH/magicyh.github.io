@@ -4,3 +4,21 @@
 ---
 
 @import "hydeout";
+
+body {
+    align-items: stretch;
+}
+
+#sidebar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+div.head-part {
+
+}
+
+div.foot-part {
+
+}

@@ -828,3 +828,11 @@ button.disqus-load {
   .posts-for-tag:target {
     display: block;
     animation: posts-for-tag-fade-in 0.6s ease-in-out; }
+
+body {
+  align-items: stretch; }
+
+#sidebar {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column; }
