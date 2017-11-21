@@ -1,6 +1,11 @@
 ---
 layout: post
 title: Ubuntu14.04 jekyll 环境部署
+categories:
+  - Jekyll
+tags:
+  - Jekyll
+  - Git
 ---
 
 Jekyll可以用于在github上搭建博客，因为Ubuntu14.04上自带的ruby版本比较低，这里记录一下如何在Ubuntu上搭建一个jekyll可用的环境

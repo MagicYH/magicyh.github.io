@@ -1,6 +1,10 @@
 ---
 layout: post
 title: Tensorflow初探索
+categories:
+  - Deeplearning
+tags:
+  - Tensorflow
 ---
 
 Tensorflow是目前很火的一个深度学习框架，借助TensorFlow可以极大地简化我们的工作量，同时降低我们运用机器学习的门槛。通过TensorFlow，我们可以不必关心过多的数学细节，而可以将精力集中在模型的构造和优化上。
