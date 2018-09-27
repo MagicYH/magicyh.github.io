@@ -91,7 +91,7 @@ curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: applicati
 
 > 参考资料：<br>
 > [http://www.cnblogs.com/ljhdo/p/4904430.html](http://www.cnblogs.com/ljhdo/p/4904430.html) <br>
-> [https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html][https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html] <br>
-> [https://es.xiaoleilu.com/052_Mapping_Analysis/50_Complex_datatypes.html][https://es.xiaoleilu.com/052_Mapping_Analysis/50_Complex_datatypes.html] <br>
-> [https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html][https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html] <br>
+> [https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html) <br>
+> [https://es.xiaoleilu.com/052_Mapping_Analysis/50_Complex_datatypes.html](https://es.xiaoleilu.com/052_Mapping_Analysis/50_Complex_datatypes.html) <br>
+> [https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html) <br>
 > [https://es.xiaoleilu.com/030_Data/45_Partial_update.html](https://es.xiaoleilu.com/030_Data/45_Partial_update.html)
