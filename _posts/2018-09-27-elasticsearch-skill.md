@@ -13,7 +13,7 @@ tags:
 ES本身是支持数组的，或者说ES中的每一个字段都可以保存成0个、1个或者以上元素的数组。只是有一点需要特别注意，**数组类型中各个元素的类型必须相同**。我们可以通过以下命令插入一条新数据
 
 ```
-curl -X PUT 'localhost:9200/test/persion/5' -d '{"name":{"first":"magic","last":"qihoo"},"age":26,"tags":["ccc","ddd"]}'
+curl -X PUT 'localhost:9200/test/persion/5' -d '{"name":{"first":"magic","last":"orc"},"age":26,"tags":["ccc","ddd"]}'
 ```
 
 其中，`tags`字段就是数组表示
@@ -28,7 +28,7 @@ curl 'localhost:9200/test/persion/_search' -d '{"query":{"terms":{"tags":["ccc",
 ```
 {
     "name.first":"magic",
-    "name.last":"qihoo"
+    "name.last":"orc"
 }
 ```
 

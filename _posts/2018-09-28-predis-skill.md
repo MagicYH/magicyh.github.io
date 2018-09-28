@@ -20,4 +20,4 @@ $client->set($key, 0, 'NX', 'EX', $ex)
 虽然这样，如果有可能的话还是建议使用phpredis扩展吧
 
 > 参考资料：<br>
-> [http://mjiong.com/docs/20062.html#i-6](http://mjiong.com/docs/20062.html#i-6)
+> [http://mjiong.com/docs/20062.html](http://mjiong.com/docs/20062.html)
