@@ -13,14 +13,33 @@ tags:
 ES本身是支持数组的，或者说ES中的每一个字段都可以保存成0个、1个或者以上元素的数组。只是有一点需要特别注意，**数组类型中各个元素的类型必须相同**。我们可以通过以下命令插入一条新数据
 
 ```
-curl -X PUT 'localhost:9200/test/persion/5' -d '{"name":{"first":"magic","last":"orc"},"age":26,"tags":["ccc","ddd"]}'
+curl -X PUT 'localhost:9200/test/persion/5' -d '{
+    "name": {
+        "first": "magic",
+        "last": "orc"
+    },
+    "age": 26,
+    "tags": [
+        "ccc",
+        "ddd"
+    ]
+}'
 ```
 
 其中，`tags`字段就是数组表示
 
 对于数组内容的检索，与正常的表示方法并没有太大区别，使用关键字`terms`进行检索，这里的`terms`相当于mysql中的`in`
 ```
-curl 'localhost:9200/test/persion/_search' -d '{"query":{"terms":{"tags":["ccc","bbb"]}}}'
+curl 'localhost:9200/test/persion/_search' -d '{
+    "query": {
+        "terms": {
+            "tags": [
+                "ccc",
+                "bbb"
+            ]
+        }
+    }
+}'
 ```
 
 ## 2.ES对象数组
@@ -34,7 +53,13 @@ curl 'localhost:9200/test/persion/_search' -d '{"query":{"terms":{"tags":["ccc",
 
 因此如果需要对子字段执行搜索，则直接用这种形式即可
 ```
-curl 'localhost:9200/test/persion/_search' -d '{"query":{"term":{"name.first":"magic"}}}'
+curl 'localhost:9200/test/persion/_search' -d '{
+    "query": {
+        "term": {
+            "name.first": "magic"
+        }
+    }
+}'
 ```
 
 ## 3.ES对象
@@ -42,33 +67,163 @@ curl 'localhost:9200/test/persion/_search' -d '{"query":{"term":{"name.first":"m
 
 首先需要设置属性类型为`nested`
 ```
-curl -X PUT 'localhost:9200/test_nested' -d '{"mappings":{"persion":{"properties":{"user":{"type":"nested"}}}}}'
+curl -X PUT 'localhost:9200/test_nested' -d '{
+    "mappings": {
+        "persion": {
+            "properties": {
+                "user": {
+                    "type": "nested"
+                }
+            }
+        }
+    }
+}'
 ```
 然后插入元素
 ```
-curl -X PUT 'localhost:9200/test_nested/persion/1' -d '{"user":{"first":"John","last":"Smith"}}'
-curl -X PUT 'localhost:9200/test_nested/persion/2' -d '{"user":{"first":"Alice","last":"White"}}'
-curl -X PUT 'localhost:9200/test_nested/persion/3' -d '{"user":[{"first":"Alice","last":"White"},{"first":"John","last":"Smith"}]}'
+curl -X PUT 'localhost:9200/test_nested/persion/1' -d '{
+    "user": {
+        "first": "John",
+        "last": "Smith"
+    }
+}'
+curl -X PUT 'localhost:9200/test_nested/persion/2' -d '{
+    "user": {
+        "first": "Alice",
+        "last": "White"
+    }
+}'
+curl -X PUT 'localhost:9200/test_nested/persion/3' -d '{
+    "user": [
+        {
+            "first": "Alice",
+            "last": "White"
+        },
+        {
+            "first": "John",
+            "last": "Smith"
+        }
+    ]
+}'
 ```
 
 然后查询
 ```
-curl -X GET "localhost:9200/test_nested/_search" -H 'Content-Type: application/json' -d '{"query":{"nested":{"path":"user","query":{"bool":{"must":[{"match":{"user.first":"Alice"}},{"match":{"user.last":"Smith"}}]}}}}}'
+curl -X GET "localhost:9200/test_nested/_search" -H 'Content-Type: application/json' -d '{
+    "query": {
+        "nested": {
+            "path": "user",
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                                "user.first": "Alice"
+                            }
+                        },
+                        {
+                            "match": {
+                                "user.last": "Smith"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}'
 
-curl -X GET "localhost:9200/test_nested/_search" -H 'Content-Type: application/json' -d '{"query":{"nested":{"path":"user","query":{"bool":{"must":[{"match":{"user.first":"Alice"}},{"match":{"user.last":"White"}}]}}}}}'
+curl -X GET "localhost:9200/test_nested/_search" -H 'Content-Type: application/json' -d '{
+    "query": {
+        "nested": {
+            "path": "user",
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                                "user.first": "Alice"
+                            }
+                        },
+                        {
+                            "match": {
+                                "user.last": "White"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}'
 ```
 
 这里可以对比一下`nested`和对象数组的区别，`nested`保留了对象各属性之间的关系，而对象数组则更像是把各个元素的属性组织成了数组
 ```
 // 插入元素
-curl -X PUT 'localhost:9200/test/persion/5' -d '{"user":{"first":"John","last":"Smith"}}'
-curl -X PUT 'localhost:9200/test/persion/6' -d '{"user":{"first":"Alice","last":"White"}}'
-curl -X PUT 'localhost:9200/test/persion/7' -d '{"user":[{"first":"Alice","last":"White"},{"first":"John","last":"Smith"}]}'
+curl -X PUT 'localhost:9200/test/persion/5' -d '{
+    "user": {
+        "first": "John",
+        "last": "Smith"
+    }
+}'
+curl -X PUT 'localhost:9200/test/persion/6' -d '{
+    "user": {
+        "first": "Alice",
+        "last": "White"
+    }
+}'
+curl -X PUT 'localhost:9200/test/persion/7' -d '{
+    "user": [
+        {
+            "first": "Alice",
+            "last": "White"
+        },
+        {
+            "first": "John",
+            "last": "Smith"
+        }
+    ]
+}'
 
 // 检索
-curl -X GET "localhost:9200/test/_search" -H 'Content-Type: application/json' -d '{"query":{"bool":{"must":[{"match":{"name.first":"Alice"}},{"match":{"name.last":"White"}}]}}}'
+curl -X GET "localhost:9200/test/_search" -H 'Content-Type: application/json' -d '{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "name.first": "Alice"
+                    }
+                },
+                {
+                    "match": {
+                        "name.last": "White"
+                    }
+                }
+            ]
+        }
+    }
+}'
 
-curl -X GET "localhost:9200/test/_search" -H 'Content-Type: application/json' -d '{"query":{"bool":{"must":[{"match":{"name.first":"Alice"}},{"match":{"name.last":"Smith"}}]}}}'
+curl -X GET "localhost:9200/test/_search" -H 'Content-Type: application/json' -d '{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "name.first": "Alice"
+                    }
+                },
+                {
+                    "match": {
+                        "name.last": "Smith"
+                    }
+                }
+            ]
+        }
+    }
+}'
 ```
 
 ## 4.ES更新
@@ -76,17 +231,90 @@ ES的基础更新操作看似功能比较少，每次更新操作必须要覆盖
 
 ```
 // 更新某个数值
-curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{"script":{"source":"ctx._source.age += params.age","lang":"painless","params":{"age":2}}}'
+curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{
+    "script": {
+        "source": "ctx._source.age += params.age",
+        "lang": "painless",
+        "params": {
+            "age": 2
+        }
+    }
+}'
 
 // 增加标签
-curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{"script":{"source":"ctx._source.tags.add(params.tag)","lang":"painless","params":{"tag":"blue"}}}'
+curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{
+    "script": {
+        "source": "ctx._source.tags.add(params.tag)",
+        "lang": "painless",
+        "params": {
+            "tag": "blue"
+        }
+    }
+}'
 
 // 按条件删除
-curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{"script":{"source":"if (ctx._source.tags.contains(params.tag)) { ctx.op = \u0027delete\u0027 } else { ctx.op = \u0027none\u0027 }","lang":"painless","params":{"tag":"red"}}}'
+curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{
+    "script": {
+        "source": "if (ctx._source.tags.contains(params.tag)) { ctx.op = 'delete' } else { ctx.op = 'none' }",
+        "lang": "painless",
+        "params": {
+            "tag": "red"
+        }
+    }
+}'
 
 // 不存在则添加，存在则移除已存在的项
-curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{"script":{"source":"if ( !ctx._source.tags.contains(params.tag) ) {  ctx._source.tags.add(params.tag) } else {  ctx._source.tags.remove(ctx._source.tags.indexOf(params.tag)) }","lang":"painless","params":{"tag":"blue"}}}'
+curl -X POST "localhost:9200/test/persion/1/_update" -H 'Content-Type: application/json' -d '{
+    "script": {
+        "source": "if ( !ctx._source.tags.contains(params.tag) ) {  ctx._source.tags.add(params.tag) } else {  ctx._source.tags.remove(ctx._source.tags.indexOf(params.tag)) }",
+        "lang": "painless",
+        "params": {
+            "tag": "blue"
+        }
+    }
+}'
 ```
+
+### script更新时遇到的一个错误
+```
+// 当执行以下更新语句时遇到一个错误，以下更新的脚本的目的是，当`first = Alice`的用户存在时更新他的last信息，如果不存在则追加一个用户信息
+curl -X POST "127.0.0.1:9200/test_nested/persion/3/_update" -d '
+{
+    "script": {
+        "source": "int idx = -1;for(int i = 0; i < ctx._source.user.size(); i++) { if (ctx._source.user[i].first == params.first) { idx = i; break; }} if ( idx > -1) { ctx._source.user[idx] = params } else { ctx._source.user.add(params) } ",
+        "lang": "painless",
+        "params": {
+            "first": "Alice",
+            "last": "Smith"
+        }
+    }
+}'
+
+// 执行后会出现如下错误
+{"error":{"root_cause":[{"type":"remote_transport_exception","reason":"[uYVDMhK][127.0.0.1:9300][indices:data/write/update[s]]"}],"type":"illegal_argument_exception","reason":"Iterable object is self-referencing itself"},"status":400}
+```
+
+最初真的是看不明白这个错误到底是什么意思，经过一番google，终于找到一个有点意思的说法
+> 参考：[https://github.com/elastic/elasticsearch/issues/19475](https://github.com/elastic/elasticsearch/issues/19475)
+
+大意是说，`params`这个参数下面，除了我们传参传进去的`first、last`两个参数之外，`ctx`这个参数其实也包括在`params`之中，也就是说`params->ctx, params->first, params->last`都是`params`中的参数，因此，直接把`params`赋值给`ctx._source.user`的这个操作可能在某处引起了无限循环，从而产生这个错误，正确的方法应当是在params中再包一层参数即可，例如：
+```
+curl -X POST "127.0.0.1:9200/test_nested/persion/3/_update" -d '
+{
+    "script": {
+        "source": "int idx = -1;for(int i = 0; i < ctx._source.user.size(); i++) { if (ctx._source.user[i].first == params.user.first) { idx = i; break; }} if ( idx > -1) { ctx._source.user[idx] = params.user } else { ctx._source.user.add(params.user) } ",
+        "lang": "painless",
+        "params": {
+            "user": {
+                "first": "Alice",
+                "last": "Smith"
+            }
+        }
+    }
+}'
+```
+
+
 
 
 > 参考资料：<br>
