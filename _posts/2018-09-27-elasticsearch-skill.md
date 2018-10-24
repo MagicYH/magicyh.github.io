@@ -314,8 +314,20 @@ curl -X POST "127.0.0.1:9200/test_nested/persion/3/_update" -d '
 }'
 ```
 
-
-
+## 5.ES更新索引类型
+使用如下语句进行mapping的更新，下例增加一个`id`字段
+```
+curl -X POST "127.0.0.1:9200/test_nested/persion/_mapping" -d '
+{
+    "persion": {
+        "properties": {
+            "id": {
+                "type": "integer"
+            }
+        }
+    }
+}'
+```
 
 > 参考资料：<br>
 > [http://www.cnblogs.com/ljhdo/p/4904430.html](http://www.cnblogs.com/ljhdo/p/4904430.html) <br>
