@@ -10,9 +10,9 @@ tags:
 一般折腾这个就是为了能够翻墙，不想折腾的话直接买VPN就好了，本文仅针对目前持有能够访问海外站点的服务器的人群，具体服务器的获取方式有很多（收费的），大部分云服务提供商都有，国外的例如亚马逊、谷歌，国内的阿里云，腾讯云等
 
 ## 搭建shadowsocket服务器
-1. 安装`python-pip`
-一般云服务器目前使用的系统多数为`centos`，在此以`centos`为例来说明怎么安装`pip`
+#### 1. 安装`python-pip`
 
+一般云服务器目前使用的系统多数为`centos`，在此以`centos`为例来说明怎么安装`pip`
 ```
 # 检索pip包名，因为各个厂商依赖的源可能会不同（特别国内厂商可能是自建源），因此需要看看`pip`的包名是什么
 yum search pip 
@@ -21,9 +21,9 @@ yum search pip
 yum install -y python2-pip
 ```
 
-2. 配置服务
-在服务器上创建配置文件`/etc/shadowsocks.json`(注意这个文件可以修改位置，并不是严格要求的，启动服务端时可以选择配置文件路径)，配置内容如下
+#### 2. 配置服务
 
+在服务器上创建配置文件`/etc/shadowsocks.json`(注意这个文件可以修改位置，并不是严格要求的，启动服务端时可以选择配置文件路径)，配置内容如下
 ```
 {
   "server": "0.0.0.0",
@@ -38,7 +38,6 @@ yum install -y python2-pip
 ```
 
 也可以配置多个端口号
-
 ```
 {
   "server": "0.0.0.0",
@@ -58,12 +57,14 @@ yum install -y python2-pip
 ```
 需要注意的一点是，必须要确保对外暴露的端口可以通过外网访问到(如果不通的话可能要查看一下安全策略，例如防火墙等等，把可以对外暴露的端口打开)
 
-3. 启动服务
+#### 3. 启动服务
+
 ```
 ssserver -c /etc/shadowsocks.json -d start
 ```
 
-4. 添加到开机启动项(可选)
+#### 4. 添加到开机启动项(可选)
+
 ```
 echo "ssserver -c /etc/shadowsocks.json -d start" >> /etc/rc.local
 ```
@@ -76,5 +77,5 @@ echo "ssserver -c /etc/shadowsocks.json -d start" >> /etc/rc.local
 
 
 ## 参考资料
-> http://kids.codepku.com/topic/view/866
-> https://www.banpie.info/shadowsocks-pac-gfw/
+> [http://kids.codepku.com/topic/view/866](http://kids.codepku.com/topic/view/866) <br>
+> [https://www.banpie.info/shadowsocks-pac-gfw/](https://www.banpie.info/shadowsocks-pac-gfw/)
