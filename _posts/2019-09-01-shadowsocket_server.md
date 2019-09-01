@@ -11,7 +11,8 @@ tags:
 
 ## 搭建shadowsocket服务器
 1. 安装`python-pip`
-    一般云服务器目前使用的系统多数为`centos`，在此以`centos`为例来说明怎么安装`pip`
+一般云服务器目前使用的系统多数为`centos`，在此以`centos`为例来说明怎么安装`pip`
+
 ```
 # 检索pip包名，因为各个厂商依赖的源可能会不同（特别国内厂商可能是自建源），因此需要看看`pip`的包名是什么
 yum search pip 
@@ -22,6 +23,7 @@ yum install -y python2-pip
 
 2. 配置服务
 在服务器上创建配置文件`/etc/shadowsocks.json`(注意这个文件可以修改位置，并不是严格要求的，启动服务端时可以选择配置文件路径)，配置内容如下
+
 ```
 {
   "server": "0.0.0.0",
@@ -34,7 +36,9 @@ yum install -y python2-pip
   "fast_open": false
 }
 ```
+
 也可以配置多个端口号
+
 ```
 {
   "server": "0.0.0.0",
