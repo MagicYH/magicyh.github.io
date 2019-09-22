@@ -28,8 +28,8 @@ allprojects {
 }
 ```
 点击`Build -> Edit Libraries and Dependencies`在`Dependencies -> app`项目下添加依赖，点击`+`号，选择`1 Library Dependency`，在输入框检索`de.robv.android.xposed:api:82`添加依赖包
-![img](https://s2.ax1x.com/2019/09/22/u9j4SS.png)
-![img](https://s2.ax1x.com/2019/09/22/uC98sO.png)
+![img](/images/xposed_init/a340b72e91ab91149105028c8f1fe2e0.png)
+![img](/images/xposed_init/0443de87b290e475923bd5f408f36ef8.png)
 添加依赖后需要再次改动`build.gradle`文件，可以看到，自动添加时，`de.robv.android.xposed:api:82`的模式是`implementation`，需要将`implementation`修改为`compileOnly`
 > 注意：这次需要改动的是`app`目录下的`build.gradle`文件，前一次是整个项目的`build.gradle`文件，两者是不一样的
 
@@ -40,7 +40,7 @@ allprojects {
 <meta-data android:name="xposeddescription" android:value="xposed demo"/>
 <meta-data android:name="xposedminversion" android:value="82"/>
 ```
-![img](https://s2.ax1x.com/2019/09/22/u9j5Qg.png)
+![img](/images/xposed_init/4daaf3bb3406720c6346f9516032ce8b.png)
 
 ### 添加目标hook方法
 在`MainActivity`类添加方法`MyToast`，作用为弹出一个toast，并且在`onCreate`方法末尾执行
@@ -49,7 +49,7 @@ public void MyToast(String msg) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 }
 ```
-![img](https://s2.ax1x.com/2019/09/22/u9xUgO.png)
+![img](/images/xposed_init/bc5ea776e0609da34bb32348c506658d.png)
 
 ### hook
 在`java`目录添加一个`hook`包，添加新类`HookMain`添加如下hook代码
@@ -76,7 +76,7 @@ public class HookMain implements IXposedHookLoadPackage {
 
 ### 配置xposed入口
 最后还需要配置xposed的入口函数，在main目录下创建文件夹`assets`，并且在文件加中创建文件`xposed_init`，其中写入xposed入口类，本例中就是`hook.HookMain`
-![img](https://s2.ax1x.com/2019/09/22/uCS9mQ.png)
+![img](/images/xposed_init/78202016d6d1c95974836985969137b4.png)
 
 ## 总结
 以上工作完成后，编译，安装即可测试
