@@ -70,6 +70,8 @@ echo "ssserver -c /etc/shadowsocks.json -d start" >> /etc/rc.local
 ```
 
 ## 客户端配置
+在[github](https://github.com/shadowsocks)找到对应系统版本的客户端
+
 需要配置的项包括
 1. 服务器地址外网IP和配置中暴露的端口号，以之前的配置为例就是`host:8989`
 2. 选择加密方式，以之前配置为例就是`aes-256-cfb`
