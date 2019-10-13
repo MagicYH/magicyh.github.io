@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Smali debug
+title: Android Smali debug
 categories:
   - android
   - smali
