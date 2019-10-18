@@ -66,3 +66,13 @@ bundle install
 # 最后运行jekyll
 jekyll serve -H 127.0.0.1
 ```
+
+### docker镜像
+使用docker镜像正常按照官方文档即可，可能会遇到版本过高又无法降级的情况，可以使用使用低版本的jekyll镜像，或者使用如下命令解决
+```
+# 安装低版本的bundler
+gem install bundler --version '1.12'
+
+# 使用低版本的bundler安装
+bundle _1.12_ install
+```
