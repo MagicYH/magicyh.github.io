@@ -19,9 +19,18 @@ yum search pip
 
 # 假设检索到的包名为: python2-pip，使用如下命令进行安装
 yum install -y python2-pip
+
+# 更新pip
+pip install --upgrade pip
 ```
 
-#### 2. 配置服务
+#### 2. 安装shadowsocks服务端
+执行命令
+```
+pip install shadowsocks
+```
+
+#### 3. 配置服务
 
 在服务器上创建配置文件`/etc/shadowsocks.json`(注意这个文件可以修改位置，并不是严格要求的，启动服务端时可以选择配置文件路径)，配置内容如下
 ```
@@ -57,13 +66,13 @@ yum install -y python2-pip
 ```
 需要注意的一点是，必须要确保对外暴露的端口可以通过外网访问到(如果不通的话可能要查看一下安全策略，例如防火墙等等，把可以对外暴露的端口打开)
 
-#### 3. 启动服务
+#### 4. 启动服务
 
 ```
 ssserver -c /etc/shadowsocks.json -d start
 ```
 
-#### 4. 添加到开机启动项(可选)
+#### 5. 添加到开机启动项(可选)
 
 ```
 echo "ssserver -c /etc/shadowsocks.json -d start" >> /etc/rc.local
